@@ -66,13 +66,13 @@
         try{
             classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
             console.log(faces.size());
-            if (faces.size() >= 2) {
-                count++;
+            // if (faces.size() >= 2) {
+                // count++;
                 $("#warning-multi-faces").removeAttr("style")
                 $("#notify-faces").text("Đã phát hiện " + faces.size() + "khuôn mặt")
-            } else {
-                $("#warning-multi-faces").attr("style", "display:none")
-                $("#notify-faces").text("")
+            // } else {
+                // $("#warning-multi-faces").attr("style", "display:none")
+                // $("#notify-faces").text("")
             }
         }catch(err){
             console.log(err);
