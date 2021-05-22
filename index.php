@@ -73,7 +73,7 @@
             // } else {
                 // $("#warning-multi-faces").attr("style", "display:none")
                 // $("#notify-faces").text("")
-            }
+            // }
         }catch(err){
             console.log(err);
         }
