@@ -15,22 +15,24 @@
 </head>
 <body>
     <div class="container app">
+    <div class="panel panel-primary">
+    <div class="panel-heading">Công cụ trông thi</div>
+    <div class="panel-body">
         <center> 
         <!-- <form> -->
             <input type="text" placeholder="Nhập id google form" id="idggform"> 
             <input type="number" placeholder="Nhập thời gian (số s)" id="time">
-            <input type="submit" value="Tạo bài làm" id="submit">
+            <input type="submit" value="Tạo bài làm" id="submit" class="btn btn-success">
         <!-- </form> -->
         <div>Thời gian còn lại để làm bài <span id="counttime">05:00</span> minutes!</div>
         <div class="bailam" style="display: none;">
             <iframe width="640" height="418" frameborder="0" marginheight="0" marginwidth="0" id="googleform">Đang tải…</iframe>
         </div>
+    </div>
 
 
 
-
-<div>
-    <video id="cam_input" height="480" width="640"></video>
+    <video id="cam_input" height="480" width="640" style="display:none"></video>
     <canvas id="canvas_output"></canvas>
 </div>
 <script>
@@ -43,8 +45,14 @@
         video.play();
     })
     .catch(function(err) {
-        console.log("An error occurred! " + err);
+        alert("Website yêu cầu quyền truy cập camera");
+        var today = new Date();
+        var timenow = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();  
+        fetch("http://localhost/tracking-app-65it4/server/api.php?event=" + parseInt(2) + "&time=" + timenow)
+        .then(data => console.log(data));
+        window.history.back();
     });
+
     let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
     let dst = new cv.Mat(video.height, video.width, cv.CV_8UC1);
     let gray = new cv.Mat();
@@ -66,6 +74,16 @@
         try{
             classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
             console.log(faces.size());
+            if (!faces.size()) {
+                count++;
+            }
+            if (count > 200) {
+                var today = new Date();
+                var timenow = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();  
+                fetch("http://localhost/tracking-app-65it4/server/api.php?event=" + parseInt(2) + "&time=" + timenow)
+                .then(data => console.log(data));
+                window.history.back()
+            }
             // if (faces.size() >= 2) {
                 // count++;
                 $("#warning-multi-faces").removeAttr("style")
@@ -108,7 +126,7 @@ setTimeout(processVideo, 0);
     </div>
         </center>
 
-
+        </div>
 
 </body>
 </html>
